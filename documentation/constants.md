@@ -1,76 +1,97 @@
 [Home](https://github.com/icarus-sullivan/redux-config/blob/master/README.md)
 
-# createReducer
-Converts key-value mapping into a singular reducer. 
+# createConstants
+Creates dynamic constants, or multiple constants depending on invoccationType.
 
-### Single Config
-createReducer can accept an array of configurations, or a singluar config. When creating configuration for a reducer, it helps to think of each `key` as it would correspond to a `case: [key]` within a switch statement. 
+**createConstants(config | config[]) => { key: string }**
+
+Options:
+| key| value | required | default |
+|--|--|--|--|
+| invoccationType | string | - | 'sync' |
+| scope | string | yes | - |
+| verbs | string[] | yes | - |
+
+### Async Declarations 
+Async constants will create 5 total values per verb. These constants are used in state mangement when async operations are called. 
 
 ```javascript
-import { createReducer } from '@sullivan/redux-config';
+import { createConstants } from '@sullivan/redux-config';
 
-const mockState = {};
-
-const reducer = createReducer({
-  POST_VIEW: (state, payload) => {
-    console.log('POST_VIEW', state, payload);
-    return state;
-  },
-  POST_DELETE: (state, { pid }) => ({
-    ...state,
-    posts: state.posts.filter(({ id }) => id !== pid),
-  }),
+const constants = createConstants({
+  invoccationType: 'async',
+  scope: 'post',
+  verbs: ['create', 'update', 'delete'],
 });
 
-reducer(mockState, { type: 'POST_VIEW', payload: { foo: 'bar' } });
+console.log(constants);
 ```
 
 Output:
 ```bash
-POST_VIEW {} { foo: 'bar' }
+{ POST_CREATE_REQUESTED: '@POST/CREATE_REQUESTED',
+  POST_CREATE_RECEIVED: '@POST/CREATE_RECEIVED',
+  POST_CREATE_FAILED: '@POST/CREATE_FAILED',
+  POST_CREATE_DONE: '@POST/CREATE_DONE',
+  POST_CREATE: '@POST/CREATE',
+  POST_UPDATE_REQUESTED: '@POST/UPDATE_REQUESTED',
+  POST_UPDATE_RECEIVED: '@POST/UPDATE_RECEIVED',
+  POST_UPDATE_FAILED: '@POST/UPDATE_FAILED',
+  POST_UPDATE_DONE: '@POST/UPDATE_DONE',
+  POST_UPDATE: '@POST/UPDATE',
+  POST_DELETE_REQUESTED: '@POST/DELETE_REQUESTED',
+  POST_DELETE_RECEIVED: '@POST/DELETE_RECEIVED',
+  POST_DELETE_FAILED: '@POST/DELETE_FAILED',
+  POST_DELETE_DONE: '@POST/DELETE_DONE',
+  POST_DELETE: '@POST/DELETE' }
 ```
 
-### Multiple Configs
-In some cases it may be useful to create factories or isolated configurations depending on code structure and requirements. 
+### Sync Declarations
+Sync constants only create one value, but do so in a uniform format for consistency.
 
 ```javascript
-import { createReducer } from '@sullivan/redux-config';
+import { createConstants } from '@sullivan/redux-config';
 
+const constants = createConstants({
+  scope: 'post',
+  verbs: ['view', 'navigate'],
+});
 
-const reducer = createReducer([
-  // post config
+console.log(constants);
+```
+
+Output:
+```bash
+{ POST_VIEW: '@POST/VIEW', POST_NAVIGATE: '@POST/NAVIGATE' }
+```
+
+### Multiple Declarations
+
+```javascript
+import { createConstants } from '@sullivan/redux-config';
+
+const constants = createConstants([
   {
-    POST_VIEW: (state) => state,
-    POST_DELETE: (state, { pid }) => ({
-      ...state,
-      posts: state.posts.filter(({ id }) => id !== pid),
-    }),
+    scope: 'post',
+    verbs: ['view', 'navigate'],
   },
-
-  // comment config
   {
-    COMMENT_LIKED: (state) => ({
-      ...state,
-      liked: true,
-    }),
-    COMMENT_UPDATE: (state, { text }) => ({
-      ...state,
-      text,
-    }),
-    CLEAR_COMMENT: (state) => ({}),
+    invoccationType: 'async',
+    scope: 'post',
+    verbs: ['create'],
   },
 ]);
 
-console.log(
-  'POST_VIEW',
-  reducer({}, { type: 'POST_VIEW', payload: { foo: 'bar' } }),
-);
-console.log('COMMENT_LIKED', reducer({}, { type: 'COMMENT_LIKED' }));
+console.log(constants);
 ```
 
 Output:
 ```bash
-POST_VIEW {}
-COMMENT_LIKED { liked: true }
+{ POST_VIEW: '@POST/VIEW',
+  POST_NAVIGATE: '@POST/NAVIGATE',
+  POST_CREATE_REQUESTED: '@POST/CREATE_REQUESTED',
+  POST_CREATE_RECEIVED: '@POST/CREATE_RECEIVED',
+  POST_CREATE_FAILED: '@POST/CREATE_FAILED',
+  POST_CREATE_DONE: '@POST/CREATE_DONE',
+  POST_CREATE: '@POST/CREATE' }
 ```
-
