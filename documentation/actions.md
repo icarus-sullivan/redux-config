@@ -4,6 +4,7 @@
 Configuration for actions can be done in multiple ways to make edge cases easier to handle.
 
 Options:
+
 | key| value | required | default |
 |--|--|--|--|
 | type | string | yes | - |
