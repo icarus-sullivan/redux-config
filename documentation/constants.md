@@ -6,6 +6,7 @@ Creates dynamic constants, or multiple constants depending on invoccationType.
 **createConstants(config | config[]) => { key: string }**
 
 Options:
+
 | key| value | required | default |
 |--|--|--|--|
 | invoccationType | string | - | 'sync' |
