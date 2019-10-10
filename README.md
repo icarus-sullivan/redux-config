@@ -19,4 +19,4 @@ npm i --save @sullivan/redux-config
 
 # Usage 
 
-// TBD
+This section TBD, for usage please view [this](https://github.com/icarus-sullivan/redux-config/blob/master/test.js)

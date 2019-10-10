@@ -1,28 +1,54 @@
-const { createConstants, createConfigActions } = require('./lib');
+const { combineConstants, createConfigActions, createConfigReducer } = require('./lib');
+const { createStore, combineReducers } = require('redux');
+
+const mockDispatch = console.log;
+const mockReducer = (type) => (state = {}) => {
+  console.log('state', type, '=>', state);
+  return state;
+};
 
 
-const Constants = createConstants({
-  invocationType: 'async',
-  scope: 'entity',
-  verbs: [
-    'create',
-    'delete',
-  ]
-});
+// Can define async and non-async together to be combined
+// 
+// For single configs use createConstants
+const constants = combineConstants([
+  {
+    invocationType: 'async',
+    scope: 'posts',
+    verbs: ['create', 'update', 'delete'],
+  },
+  {
+    scope: 'posts',
+    verbs: ['navigate'],
+  }
+])
 
 
-console.log('constants', Constants);
-
-const actions = createConfigActions({
+const actionCreator = createConfigActions({
   testInvoke: {
-    type: Constants.ENTITY_CREATE,
+    type: constants.POSTS_CREATE,
     invocationType: 'async',
     fn: (...args) => {
 
       return { args, foo : 'bar' };
     }
   },
-})(console.log);
+});
 
 
-actions.testInvoke('passed');
+const reducer = createConfigReducer({
+  [constants.POSTS_CREATE_REQUESTED]: mockReducer(constants.POSTS_CREATE_REQUESTED),
+  [constants.POSTS_CREATE_RECEIVED]: mockReducer(constants.POSTS_CREATE_RECEIVED),
+  [constants.POSTS_CREATE_FAILED]: mockReducer(constants.POSTS_CREATE_FAILED),
+  [constants.POSTS_CREATE_DONE]: mockReducer(constants.POSTS_CREATE_DONE),
+});
+
+
+// redux specific below 
+const store = createStore(reducer, {
+  test: {},
+});
+
+const actions = actionCreator(store.dispatch);
+
+actions.testInvoke('hi');

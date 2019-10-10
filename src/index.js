@@ -40,7 +40,7 @@ export const createConfigActions = obj => dispatch =>
 
   const SpecialCharactersCheck = /[^A-Z0-9\_]/gi;
 
-export const createConstants = ({ invocationType = InvocationTypes.SYNC, scope, verbs = [] }) =>
+export const createConstants = ({ invocationType = InvocationType.SYNC, scope, verbs = [] }) =>
   verbs.reduce((a, b) => {
     const SCOPE = scope.toUpperCase();
     const VERB = b.toUpperCase();
@@ -56,6 +56,7 @@ export const createConstants = ({ invocationType = InvocationTypes.SYNC, scope, 
     return a;
   }, {});
 
+  export const combineConstants = (config = []) => config.reduce((a, b) => ({...a, ...createConstants(b) }), {});
 
   export const createConfigReducer = config => (state, { type, payload }) => {
     const handler = config[type];
