@@ -1,54 +1,31 @@
-const { combineConstants, createConfigActions, createConfigReducer } = require('./lib');
-const { createStore, combineReducers } = require('redux');
+const { createReducer, createConstants, createActions } = require('./lib');
 
-const mockDispatch = console.log;
-const mockReducer = (type) => (state = {}) => {
-  console.log('state', type, '=>', state);
-  return state;
-};
-
-
-// Can define async and non-async together to be combined
-// 
-// For single configs use createConstants
-const constants = combineConstants([
+const reducer = createReducer([
+  // post config
   {
-    invocationType: 'async',
-    scope: 'posts',
-    verbs: ['create', 'update', 'delete'],
+    POST_VIEW: (state) => state,
+    POST_DELETE: (state, { pid }) => ({
+      ...state,
+      posts: state.posts.filter(({ id }) => id !== pid),
+    }),
   },
+
+  // comment config
   {
-    scope: 'posts',
-    verbs: ['navigate'],
-  }
-])
-
-
-const actionCreator = createConfigActions({
-  testInvoke: {
-    type: constants.POSTS_CREATE,
-    invocationType: 'async',
-    fn: (...args) => {
-
-      return { args, foo : 'bar' };
-    }
+    COMMENT_LIKED: (state) => ({
+      ...state,
+      liked: true,
+    }),
+    COMMENT_UPDATE: (state, { text }) => ({
+      ...state,
+      text,
+    }),
+    CLEAR_COMMENT: (state) => ({}),
   },
-});
+]);
 
-
-const reducer = createConfigReducer({
-  [constants.POSTS_CREATE_REQUESTED]: mockReducer(constants.POSTS_CREATE_REQUESTED),
-  [constants.POSTS_CREATE_RECEIVED]: mockReducer(constants.POSTS_CREATE_RECEIVED),
-  [constants.POSTS_CREATE_FAILED]: mockReducer(constants.POSTS_CREATE_FAILED),
-  [constants.POSTS_CREATE_DONE]: mockReducer(constants.POSTS_CREATE_DONE),
-});
-
-
-// redux specific below 
-const store = createStore(reducer, {
-  test: {},
-});
-
-const actions = actionCreator(store.dispatch);
-
-actions.testInvoke('hi');
+console.log(
+  'POST_VIEW',
+  reducer({}, { type: 'POST_VIEW', payload: { foo: 'bar' } }),
+);
+console.log('COMMENT_LIKED', reducer({}, { type: 'COMMENT_LIKED' }));

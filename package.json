@@ -1,12 +1,13 @@
 {
   "name": "@sullivan/redux-config",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Reduces redux boilerplate with a configurable structure",
   "main": "lib/index.js",
   "files": [
     "lib/*"
   ],
   "scripts": {
+    "lint": "eslint .",
     "prepare": "npx babel src --out-dir lib"
   },
   "repository": {
@@ -30,8 +31,14 @@
     "@babel/core": "^7.6.2",
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
+    "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
-    "redux": "^4.0.4"
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2"
   },
   "dependencies": {
     "core-js": "^3.2.1",

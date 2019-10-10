@@ -1,0 +1,16 @@
+{
+  "name": "@sullivan/redux-config-example",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "rm -rf node_modules ; yarn install ; yarn start",
+    "start": "node index.js"
+  },
+  "author": "Chris Sullivan",
+  "license": "MIT",
+  "dependencies": {
+    "@sullivan/redux-config": "../",
+    "redux": "^4.0.4"
+  }
+}
