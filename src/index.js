@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 export const InvocationType = {
   SYNC: 'sync',
@@ -36,17 +38,20 @@ export const createConfigActions = obj => dispatch =>
     return a;
   }, {});
 
+  const SpecialCharactersCheck = /[^A-Z0-9\_]/gi;
 
 export const createConstants = ({ invocationType = InvocationTypes.SYNC, scope, verbs = [] }) =>
   verbs.reduce((a, b) => {
     const SCOPE = scope.toUpperCase();
     const VERB = b.toUpperCase();
-    a[`${SCOPE}_${VERB}`] = `@${SCOPE}/${VERB}`;
+    const key = `${SCOPE}_${VERB}`.replace(SpecialCharactersCheck, '_');
+    const value = `@${SCOPE}/${VERB}`;
+    a[key] = value;
     if (invocationType === InvocationType.ASYNC) {
-      a[`${SCOPE}_${VERB}_REQUESTED`] = `@${SCOPE}/${VERB}_REQUESTED`;
-      a[`${SCOPE}_${VERB}_RECEIVED`] = `@${SCOPE}/${VERB}_RECEIVED`;
-      a[`${SCOPE}_${VERB}_FAILED`] = `@${SCOPE}/${VERB}_FAILED`;
-      a[`${SCOPE}_${VERB}_DONE`] = `@${SCOPE}/${VERB}_DONE`;
+      a[`${key}_REQUESTED`] = `${value}_REQUESTED`;
+      a[`${key}_RECEIVED`] = `${value}_RECEIVED`;
+      a[`${key}_FAILED`] = `${value}_FAILED`;
+      a[`${key}_DONE`] = `${value}_DONE`;
     }
     return a;
   }, {});

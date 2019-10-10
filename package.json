@@ -1,8 +1,11 @@
 {
   "name": "@sullivan/redux-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Reduces redux boilerplate with a configurable structure",
   "main": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "prepare": "npx babel src --out-dir lib"
   },
@@ -28,5 +31,9 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "babel-loader": "^8.0.6"
+  },
+  "dependencies": {
+    "core-js": "^3.2.1",
+    "regenerator-runtime": "^0.13.3"
   }
 }
