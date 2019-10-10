@@ -1,0 +1,25 @@
+{
+  "name": "@sullivan/redux-config",
+  "version": "0.0.1",
+  "description": "Reduces redux boilerplate with a configurable structure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icarus-sullivan/redux-config.git"
+  },
+  "keywords": [
+    "redux",
+    "config",
+    "boilerplate",
+    "simple"
+  ],
+  "author": "Chris Sullivan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icarus-sullivan/redux-config/issues"
+  },
+  "homepage": "https://github.com/icarus-sullivan/redux-config#readme"
+}
