@@ -20,7 +20,7 @@
  *
  * @param {*} param0
  */
-const createAction = ({ type, payload, dispatch }) => (...args) => 
+const createAction = ({ type, payload, dispatch }) => (...args) =>
   dispatch({
     type,
     payload: payload || (args.length === 1 ? args[0] : args),
@@ -43,9 +43,12 @@ const createAsyncAction = ({ type, errorPayload, dispatch, fn }) => async (
   ...args
 ) => {
   try {
-    dispatch({ type: `${type}_REQUESTED` });
+    dispatch({
+      type: `${type}_REQUESTED`,
+      payload: args.length === 1 ? args[0] : args,
+    });
     const res = await fn(...args);
-    dispatch({ type: `${type}_RECEIVED`, payload: res });
+    dispatch({ type: `${type}_SUCCEEDED`, payload: res });
   } catch (e) {
     dispatch({ type: `${type}_FAILED`, payload: errorPayload || e });
   } finally {

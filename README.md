@@ -62,7 +62,7 @@ const postReducer = createReducer({
     ...state,
     loading: true,
   }),
-  [Constants.POSTS_CREATE_RECEIVED]: (state, post) => ({
+  [Constants.POSTS_CREATE_SUCCEEDED]: (state, post) => ({
     ...state,
     ...post,
   }),
@@ -98,7 +98,7 @@ actions.createPost({
 
 // dispatching { type: '@POSTS/CREATE_REQUESTED' }
 // next state { loading: true }
-// dispatching { type: '@POSTS/CREATE_RECEIVED',
+// dispatching { type: '@POSTS/CREATE_SUCCEEDED',
 //   payload:
 //    { userId: '123',
 //      username: '@sullivan',

@@ -27,7 +27,7 @@ const createConstantsImpl = ({
 
     if (invoccationType === 'async') {
       a[`${key}_REQUESTED`] = `${value}_REQUESTED`;
-      a[`${key}_RECEIVED`] = `${value}_RECEIVED`;
+      a[`${key}_SUCCEEDED`] = `${value}_SUCCEEDED`;
       a[`${key}_FAILED`] = `${value}_FAILED`;
       a[`${key}_DONE`] = `${value}_DONE`;
     }

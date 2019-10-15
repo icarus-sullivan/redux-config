@@ -31,26 +31,26 @@ const actions = createActions({
   fetchPage: {
     invoccationType: 'async',
     type: 'PAGE',
-    fn: async () => fetch('http://content.json'),
+    fn: async (url) => fetch(url),
   },
 });
 
 const created = actions(dispatch);
 
-created.fetchPage();
+created.fetchPage('http://content.json');
 ```
 
 Success Output:
 ```bash
-{ type: 'PAGE_REQUESTED' }
-{ type: 'PAGE_RECEIVED',
+{ type: 'PAGE_REQUESTED', payload: 'http://content.json' }
+{ type: 'PAGE_SUCCEEDED',
   payload: { url: 'http://content.json', data: {} } }
 { type: 'PAGE_DONE' }
 ```
 
 Error Output:
 ```bash
-{ type: 'PAGE_REQUESTED' }
+{ type: 'PAGE_REQUESTED', payload: 'http://content.json' }
 { type: 'PAGE_FAILED',
   payload:
    Error: nope
