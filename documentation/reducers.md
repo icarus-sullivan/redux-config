@@ -10,7 +10,7 @@ createReducer can accept an array of configurations, or a singluar config. When 
 import { createReducer } from '@sullivan/redux-config';
 
 const mockState = {};
-
+const initialState = {};
 const reducer = createReducer({
   POST_VIEW: (state, payload) => {
     console.log('POST_VIEW', state, payload);
@@ -20,7 +20,7 @@ const reducer = createReducer({
     ...state,
     posts: state.posts.filter(({ id }) => id !== pid),
   }),
-});
+}, initialState);
 
 reducer(mockState, { type: 'POST_VIEW', payload: { foo: 'bar' } });
 ```
