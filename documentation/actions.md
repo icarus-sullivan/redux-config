@@ -155,7 +155,6 @@ const dispatch = console.log;
 
 const actions = createActions({
   autoPayload: {
-    invoccationType: 'sync',
     type: 'ENABLE',
   },
 });
