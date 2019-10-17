@@ -1,5 +1,6 @@
-# redux-config
 ![Downloads][link-download] ![Version][link-version] ![License][link-license]
+
+# redux-config
 Reduces boilerplate for redux into a simple configuration pattern
 
 
