@@ -167,6 +167,6 @@ created.autoPayload({ foo: 'bar' });
 
 Output:
 ```bash
-{ type: 'DYNAMIC', payload: [ 1, 2, 3 ] }
-{ type: 'DYNAMIC', payload: { foo: 'bar' } }
+{ type: 'ENABLE', payload: [ 1, 2, 3 ] }
+{ type: 'ENABLE', payload: { foo: 'bar' } }
   ```
