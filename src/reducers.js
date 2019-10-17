@@ -1,13 +1,28 @@
-export const createReducer = (config, initial = null) => {
-  const configMap = Array.isArray(config)
-    ? config.reduce((a, b) => ({ ...a, ...b }), {})
-    : config;
+const createReducerImpl = (mapping, initial = null) => (
+  state = initial,
+  { type, payload },
+) => {
+  const handler = mapping[type];
+  if (handler) {
+    return handler(state, payload);
+  }
+  return state;
+};
 
-  return (state = initial, { type, payload }) => {
-    const handler = configMap[type];
-    if (handler) {
-      return handler(state, payload);
+export const createReducer = (configs) => {
+  const configurations = Array.isArray(configs) ? configs : [configs];
+
+  const reducers = configurations.map(({ namespace, mapping, initial = null }) => {
+    const reducer = createReducerImpl(mapping, initial);
+    if (namespace) {
+      return (state = initial, action) => ({
+        ...state,
+        [namespace]: reducer(state[namespace], action),
+      });
     }
-    return state;
-  };
+
+    return reducer;
+  });
+
+  return (state, action) => reducers.reduce((s, fn) => fn(s, action), state);
 };

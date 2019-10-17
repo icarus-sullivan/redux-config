@@ -10,7 +10,7 @@ Options:
 | type | string | yes | - |
 | invoccationType | string | - | 'sync' |
 | fn | function | async only | - |
-| errorPayload | any | async only | Error |
+| errorTransform | AsyncFunction | - | - |
 | payload | any | static only | - |
 
 ** Note actions can also be normal functions, these will be wrapped in dispatch and invoked and should follow the normal `{ type, payload }` convention when applicable.
@@ -40,24 +40,13 @@ const created = actions(dispatch);
 created.fetchPage('http://content.json');
 ```
 
-Success Output:
+Output:
 ```bash
 { type: 'PAGE_REQUESTED', payload: 'http://content.json' }
 { type: 'PAGE_SUCCEEDED',
   payload: { url: 'http://content.json', data: {} } }
 { type: 'PAGE_DONE' }
 ```
-
-Error Output:
-```bash
-{ type: 'PAGE_REQUESTED', payload: 'http://content.json' }
-{ type: 'PAGE_FAILED',
-  payload:
-   Error: nope
-       at ... StackTrace
-{ type: 'PAGE_DONE' }
-```
-
 
 ### Async Declarations - Overriding Errors
 If there are cases in which we expect an error to occur and want to respond with a specific payload. We can add an `errorPayload` value during our declaration. The original error will be ignored and our error data will be dispatched.
@@ -67,27 +56,27 @@ const actions = createActions({
   fetchPage: {
     invoccationType: 'async',
     type: 'PAGE',
-    errorPayload: {
-      url: 'http://content.json',
-      data: {},
-    },
+    errorTransform: (e) => ({
+      error: e.message,
+      override: true,
+    }),
     fn: async () => {
       throw new Error('nope');
-    }
+    },
   },
 });
 
-...
+const created = actions(console.log);
 
 created.fetchPage();
 ```
 
 Output: 
 ```bash
-{ type: 'PAGE_REQUESTED' }
-{ type: 'PAGE_FAILED',
-  payload: { url: 'http://content.json', data: {} } }
-{ type: 'PAGE_DONE' }
+// { type: 'PAGE_REQUESTED', payload: [] }
+// { type: 'PAGE_FAILED',
+//   payload: { error: 'nope', override: true } }
+// { type: 'PAGE_DONE' }
 ```
 
 ### Synchronous Declarations - Simple

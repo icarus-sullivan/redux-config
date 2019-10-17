@@ -335,9 +335,9 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/helper-remap-async-to-generator" "^7.1.0"
 
-"@babel/plugin-transform-block-scoped-functions@^7.2.0":
+"@babel/plugin-transform-block-namespaced-functions@^7.2.0":
   version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-block-scoped-functions/-/plugin-transform-block-scoped-functions-7.2.0.tgz#5d3cc11e8d5ddd752aa64c9148d0db6cb79fd190"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-block-namespaced-functions/-/plugin-transform-block-namespaced-functions-7.2.0.tgz#5d3cc11e8d5ddd752aa64c9148d0db6cb79fd190"
   integrity sha512-ntQPR6q1/NKuphly49+QiQiTN0O63uOwjdD6dhIjSWBI5xlrbUFh720TIpzBhpnrLfv2tNH/BXvLIab1+BAI0w==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
@@ -593,7 +593,7 @@
     "@babel/plugin-syntax-optional-catch-binding" "^7.2.0"
     "@babel/plugin-transform-arrow-functions" "^7.2.0"
     "@babel/plugin-transform-async-to-generator" "^7.5.0"
-    "@babel/plugin-transform-block-scoped-functions" "^7.2.0"
+    "@babel/plugin-transform-block-namespaced-functions" "^7.2.0"
     "@babel/plugin-transform-block-scoping" "^7.6.3"
     "@babel/plugin-transform-classes" "^7.5.5"
     "@babel/plugin-transform-computed-properties" "^7.2.0"
@@ -1269,9 +1269,9 @@ eslint-plugin-prettier@^3.1.1:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-scope@^5.0.0:
+eslint-namespace@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-5.0.0.tgz#e87c8887c73e8d1ec84f1ca591645c358bfc8fb9"
+  resolved "https://registry.yarnpkg.com/eslint-namespace/-/eslint-namespace-5.0.0.tgz#e87c8887c73e8d1ec84f1ca591645c358bfc8fb9"
   integrity sha512-oYrhJW7S0bxAFDvWqzvMPRm6pcgcnWc4QnofCAqRTRfQC0JcwenzGglTtsLyIuuWFfkqDG9vz67cnttSd53djw==
   dependencies:
     esrecurse "^4.1.0"
@@ -1300,7 +1300,7 @@ eslint@^6.5.1:
     cross-spawn "^6.0.5"
     debug "^4.0.1"
     doctrine "^3.0.0"
-    eslint-scope "^5.0.0"
+    eslint-namespace "^5.0.0"
     eslint-utils "^1.4.2"
     eslint-visitor-keys "^1.1.0"
     espree "^6.1.1"

@@ -14,11 +14,10 @@ npm i --save @sullivan/redux-config
 
 ## Documentation
 
-| Function | Description |
-|--|--|
-| [createConstants][constant] | Generates constants |
-| [createActions][action] | Generates actions |
-| [createReducer][reducer] | Converts object key-values into a reducer |
+- [Constants][constant]
+- [Actions][action]
+- [Reducers][reducer]
+
 
 [link-download]: https://img.shields.io/npm/dt/@sullivan/redux-config
 [link-version]: https://img.shields.io/npm/v/@sullivan/redux-config.svg
@@ -42,7 +41,7 @@ const {
 const Constants = createConstants([
   {
     invoccationType: 'async',
-    scope: 'posts',
+    namespace: 'posts',
     verbs: ['create', 'update'],
   },
 ]);

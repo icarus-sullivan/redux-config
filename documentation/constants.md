@@ -10,7 +10,7 @@ Options:
 | key| value | required | default |
 |--|--|--|--|
 | invoccationType | string | - | 'sync' |
-| scope | string | yes | - |
+| namespace | string | yes | - |
 | verbs | string[] | yes | - |
 
 ### Async Declarations 
@@ -21,7 +21,7 @@ import { createConstants } from '@sullivan/redux-config';
 
 const constants = createConstants({
   invoccationType: 'async',
-  scope: 'post',
+  namespace: 'post',
   verbs: ['create', 'update', 'delete'],
 });
 
@@ -54,7 +54,7 @@ Sync constants only create one value, but do so in a uniform format for consiste
 import { createConstants } from '@sullivan/redux-config';
 
 const constants = createConstants({
-  scope: 'post',
+  namespace: 'post',
   verbs: ['view', 'navigate'],
 });
 
@@ -73,12 +73,12 @@ import { createConstants } from '@sullivan/redux-config';
 
 const constants = createConstants([
   {
-    scope: 'post',
+    namespace: 'post',
     verbs: ['view', 'navigate'],
   },
   {
     invoccationType: 'async',
-    scope: 'post',
+    namespace: 'post',
     verbs: ['create'],
   },
 ]);

@@ -39,19 +39,21 @@ const createAction = ({ type, payload, dispatch }) => (...args) =>
  *
  * @param {*} param0
  */
-const createAsyncAction = ({ type, errorPayload, dispatch, fn }) => async (
-  ...args
-) => {
+const createAsyncAction = ({
+  type,
+  errorTransform = (e) => e,
+  dispatch,
+  fn,
+}) => async (...args) => {
   try {
     dispatch({
       type: `${type}_REQUESTED`,
       payload: args.length === 1 ? args[0] : args,
     });
-    const res = await fn(...args);
-    dispatch({ type: `${type}_SUCCEEDED`, payload: res });
+    dispatch({ type: `${type}_SUCCEEDED`, payload: await fn(...args) });
+    dispatch({ type: `${type}_DONE` });
   } catch (e) {
-    dispatch({ type: `${type}_FAILED`, payload: errorPayload || e });
-  } finally {
+    dispatch({ type: `${type}_FAILED`, payload: await errorTransform(e) });
     dispatch({ type: `${type}_DONE` });
   }
 };
@@ -72,7 +74,7 @@ const createAsyncAction = ({ type, errorPayload, dispatch, fn }) => async (
  *
  * @param {*} param0
  */
-const createFnAcition = ({ dispatch, fn }) => (...args) =>
+const createFnFunction = ({ dispatch, fn }) => (...args) =>
   dispatch(fn(...args));
 
 export const createActions = (obj) => (dispatch) =>
@@ -80,7 +82,7 @@ export const createActions = (obj) => (dispatch) =>
     // We were passed a function, automatically wrap it in dispatch
     // when it is invoked
     if (typeof value === 'function') {
-      a[key] = createFnAcition({ dispatch, fn: value });
+      a[key] = createFnFunction({ dispatch, fn: value });
       return a;
     }
 

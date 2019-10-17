@@ -1,11 +1,11 @@
 const SPECIAL_CHARS_REGEX = /[^A-Z0-9_]/gi;
 
 /**
- * Generates constants based off a scope, appending the verb in a
+ * Generates constants based off a namespace, appending the verb in a
  * consistent manner.
  *
  * {
- *   scope: 'posts',
+ *   namespace: 'posts',
  *   verbs: ['navigated'],
  * }
  *
@@ -15,15 +15,15 @@ const SPECIAL_CHARS_REGEX = /[^A-Z0-9_]/gi;
  */
 const createConstantsImpl = ({
   invoccationType = 'sync',
-  scope,
+  namespace,
   verbs = [],
 }) => {
-  const SCOPE = scope.toUpperCase();
+  const scope = namespace.toUpperCase();
 
   return verbs.reduce((a, b) => {
     const VERB = b.toUpperCase();
-    const key = `${SCOPE}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
-    const value = `@${SCOPE}/${VERB}`;
+    const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
+    const value = `@${scope}/${VERB}`;
 
     if (invoccationType === 'async') {
       a[`${key}_REQUESTED`] = `${value}_REQUESTED`;
@@ -44,11 +44,11 @@ const createConstantsImpl = ({
  * [
  *   {
  *     invoccationType: 'async',
- *     scope: 'posts',
+ *     namespace: 'posts',
  *     verbs: ['created', 'deleted'],
  *   },
  *   {
- *     scope: 'posts',
+ *     namespace: 'posts',
  *     verbs: ['navigated'],
  *   }
  * ]
