@@ -32,11 +32,7 @@ Below is a simple example including redux usage:
 
 ```javascript
 const { createStore, applyMiddleware } = require('redux');
-const {
-  createReducer,
-  createConstants,
-  createActions,
-} = require('@sullivan/redux-config');
+const { createReducer, createConstants, createActions } = require('@sullivan/redux-config');
 
 const Constants = createConstants([
   {
@@ -52,28 +48,40 @@ const postActions = createActions({
     invoccationType: 'async',
     fn: async (post) =>
       new Promise((resolve) => {
-        setTimeout(() => resolve(post), 100);
+        setTimeout(
+          () =>
+            resolve({
+              postId: '222',
+              from: '@sullivan',
+              text: post.message,
+            }),
+          100,
+        );
       }),
   },
 });
 
 const postReducer = createReducer({
-  [Constants.POSTS_CREATE_REQUESTED]: (state) => ({
-    ...state,
-    loading: true,
-  }),
-  [Constants.POSTS_CREATE_SUCCEEDED]: (state, post) => ({
-    ...state,
-    ...post,
-  }),
-  [Constants.POSTS_CREATE_FAILED]: (state, error) => ({
-    ...state,
-    error: error.message,
-  }),
-  [Constants.POSTS_CREATE_DONE]: (state) => ({
-    ...state,
-    loading: false,
-  }),
+  namespace: 'posts',
+  mapping: {
+    [Constants.POSTS_CREATE_REQUESTED]: (state) => ({
+      ...state,
+      loading: true,
+    }),
+    [Constants.POSTS_CREATE_SUCCEEDED]: (state, post) => ({
+      ...state,
+      ...post,
+    }),
+    [Constants.POSTS_CREATE_FAILED]: (state, error) => ({
+      ...state,
+      error: error.message,
+    }),
+    [Constants.POSTS_CREATE_DONE]: (state) => ({
+      ...state,
+      loading: false,
+    }),
+  },
+  initial: {},
 });
 
 // log changes
@@ -95,21 +103,28 @@ actions.createPost({
   username: '@sullivan',
   message: 'How is it going?',
 });
+```
 
-// dispatching { type: '@POSTS/CREATE_REQUESTED' }
-// next state { loading: true }
-// dispatching { type: '@POSTS/CREATE_SUCCEEDED',
-//   payload:
-//    { userId: '123',
-//      username: '@sullivan',
-//      message: 'How is it going?' } }
-// next state { loading: true,
-//   userId: '123',
-//   username: '@sullivan',
-//   message: 'How is it going?' }
-// dispatching { type: '@POSTS/CREATE_DONE' }
-// next state { loading: false,
-//   userId: '123',
-//   username: '@sullivan',
-//   message: 'How is it going?' }
+Output: 
+```bash
+dispatching { type: '@POSTS/CREATE_REQUESTED',
+  payload:
+   { userId: '123',
+     username: '@sullivan',
+     message: 'How is it going?' } }
+next state { posts: { loading: true } }
+dispatching { type: '@POSTS/CREATE_SUCCEEDED',
+  payload:
+   { postId: '222', from: '@sullivan', text: 'How is it going?' } }
+next state { posts:
+   { loading: true,
+     postId: '222',
+     from: '@sullivan',
+     text: 'How is it going?' } }
+dispatching { type: '@POSTS/CREATE_DONE' }
+next state { posts:
+   { loading: false,
+     postId: '222',
+     from: '@sullivan',
+     text: 'How is it going?' } }
 ```
