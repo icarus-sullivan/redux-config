@@ -1,12 +1,28 @@
 [Home](https://github.com/icarus-sullivan/redux-config/blob/master/README.md)
 
-# createConstants
+# createAsyncEnum(string)
+
+```javascript
+const { createAsyncEnum } = require('../../lib');
+
+const constants = createAsyncEnum('COMMENT');
+
+console.log(constants);
+```
+
+Output:
+```bash
+{ DEFAULT: 'COMMENT',
+  REQUESTED: 'COMMENT_REQUESTED',
+  SUCCEEDED: 'COMMENT_SUCCEEDED',
+  FAILED: 'COMMENT_FAILED',
+  DONE: 'COMMENT_DONE' }
+```
+
+# createConstants(config | config[]) => { key: string }
 Creates dynamic constants, or multiple constants depending on invoccationType.
 
-**createConstants(config | config[]) => { key: string }**
-
-Options:
-
+Config:
 | key| value | required | default |
 |--|--|--|--|
 | invoccationType | string | - | 'sync' |
@@ -30,21 +46,24 @@ console.log(constants);
 
 Output:
 ```bash
-{ POST_CREATE_REQUESTED: '@POST/CREATE_REQUESTED',
-  POST_CREATE_SUCCEEDED: '@POST/CREATE_SUCCEEDED',
-  POST_CREATE_FAILED: '@POST/CREATE_FAILED',
-  POST_CREATE_DONE: '@POST/CREATE_DONE',
-  POST_CREATE: '@POST/CREATE',
-  POST_UPDATE_REQUESTED: '@POST/UPDATE_REQUESTED',
-  POST_UPDATE_SUCCEEDED: '@POST/UPDATE_SUCCEEDED',
-  POST_UPDATE_FAILED: '@POST/UPDATE_FAILED',
-  POST_UPDATE_DONE: '@POST/UPDATE_DONE',
-  POST_UPDATE: '@POST/UPDATE',
-  POST_DELETE_REQUESTED: '@POST/DELETE_REQUESTED',
-  POST_DELETE_SUCCEEDED: '@POST/DELETE_SUCCEEDED',
-  POST_DELETE_FAILED: '@POST/DELETE_FAILED',
-  POST_DELETE_DONE: '@POST/DELETE_DONE',
-  POST_DELETE: '@POST/DELETE' }
+{ POST_CREATE:
+   { DEFAULT: '@POST/CREATE',
+     REQUESTED: '@POST/CREATE_REQUESTED',
+     SUCCEEDED: '@POST/CREATE_SUCCEEDED',
+     FAILED: '@POST/CREATE_FAILED',
+     DONE: '@POST/CREATE_DONE' },
+  POST_UPDATE:
+   { DEFAULT: '@POST/UPDATE',
+     REQUESTED: '@POST/UPDATE_REQUESTED',
+     SUCCEEDED: '@POST/UPDATE_SUCCEEDED',
+     FAILED: '@POST/UPDATE_FAILED',
+     DONE: '@POST/UPDATE_DONE' },
+  POST_DELETE:
+   { DEFAULT: '@POST/DELETE',
+     REQUESTED: '@POST/DELETE_REQUESTED',
+     SUCCEEDED: '@POST/DELETE_SUCCEEDED',
+     FAILED: '@POST/DELETE_FAILED',
+     DONE: '@POST/DELETE_DONE' } }
 ```
 
 ### Sync Declarations
@@ -90,9 +109,10 @@ Output:
 ```bash
 { POST_VIEW: '@POST/VIEW',
   POST_NAVIGATE: '@POST/NAVIGATE',
-  POST_CREATE_REQUESTED: '@POST/CREATE_REQUESTED',
-  POST_CREATE_SUCCEEDED: '@POST/CREATE_SUCCEEDED',
-  POST_CREATE_FAILED: '@POST/CREATE_FAILED',
-  POST_CREATE_DONE: '@POST/CREATE_DONE',
-  POST_CREATE: '@POST/CREATE' }
+  POST_CREATE:
+   { DEFAULT: '@POST/CREATE',
+     REQUESTED: '@POST/CREATE_REQUESTED',
+     SUCCEEDED: '@POST/CREATE_SUCCEEDED',
+     FAILED: '@POST/CREATE_FAILED',
+     DONE: '@POST/CREATE_DONE' } }
 ```
