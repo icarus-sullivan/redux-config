@@ -1,8 +1,10 @@
-import { createActions } from '../src';
+import { createActions, createAsyncEnum } from '../src';
+import harness from './harness';
 
 const MOCK_TYPE = 'TEST';
+const ASYNC_TYPES = createAsyncEnum(MOCK_TYPE);
 
-export const test = (config, expectations, ...args) => async () => {
+export const runner = (config, expectations, ...args) => async () => {
   const dispatch = jest.fn();
   const created = createActions({ action: config })(dispatch);
 
@@ -13,16 +15,7 @@ export const test = (config, expectations, ...args) => async () => {
   });
 };
 
-export const run = (configuration) =>
-  configuration.forEach(({ description, tests }) => {
-    describe(description, () => {
-      tests.forEach(({ name, params }) => {
-        it(name, test(...params));
-      });
-    });
-  });
-
-run([
+harness(runner, [
   {
     description: 'Static Actions',
     tests: [
@@ -107,16 +100,16 @@ run([
         params: [
           {
             invoccationType: 'async',
-            type: MOCK_TYPE,
+            type: ASYNC_TYPES.DEFAULT,
             fn: async (arg) => ({
               success: true,
               arg,
             }),
           },
           [
-            { type: `${MOCK_TYPE}_REQUESTED`, payload: 'given argument' },
+            { type: ASYNC_TYPES.REQUESTED, payload: 'given argument' },
             {
-              type: `${MOCK_TYPE}_SUCCEEDED`,
+              type: ASYNC_TYPES.SUCCEEDED,
               payload: { arg: 'given argument', success: true },
             },
             {
@@ -131,19 +124,19 @@ run([
         params: [
           {
             invoccationType: 'async',
-            type: MOCK_TYPE,
+            type: ASYNC_TYPES.DEFAULT,
             fn: async () => {
               throw new Error('failed');
             },
           },
           [
-            { type: `${MOCK_TYPE}_REQUESTED`, payload: 'some args' },
+            { type: ASYNC_TYPES.REQUESTED, payload: 'some args' },
             {
-              type: `${MOCK_TYPE}_FAILED`,
+              type: ASYNC_TYPES.FAILED,
               payload: new Error('failed'),
             },
             {
-              type: `${MOCK_TYPE}_DONE`,
+              type: ASYNC_TYPES.DONE,
             },
           ],
           'some args',
@@ -154,7 +147,7 @@ run([
         params: [
           {
             invoccationType: 'async',
-            type: MOCK_TYPE,
+            type: ASYNC_TYPES.DEFAULT,
             errorTransform: (err) => ({
               error: err.message,
               success: false,
@@ -164,16 +157,16 @@ run([
             },
           },
           [
-            { type: `${MOCK_TYPE}_REQUESTED`, payload: [] },
+            { type: ASYNC_TYPES.REQUESTED, payload: [] },
             {
-              type: `${MOCK_TYPE}_FAILED`,
+              type: ASYNC_TYPES.FAILED,
               payload: {
                 error: 'nope',
                 success: false,
               },
             },
             {
-              type: `${MOCK_TYPE}_DONE`,
+              type: ASYNC_TYPES.DONE,
             },
           ],
         ],

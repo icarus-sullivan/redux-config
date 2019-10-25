@@ -1,12 +1,18 @@
 const SPECIAL_CHARS_REGEX = /[^A-Z0-9_]/gi;
 
-const createAsyncConstants = (value) => ({
-  DEFAULT: value,
-  REQUESTED: `${value}_REQUESTED`,
-  SUCCEEDED: `${value}_SUCCEEDED`,
-  FAILED: `${value}_FAILED`,
-  DONE: `${value}_DONE`,
-});
+export const createAsyncEnum = (value) => {
+  if (!value) {
+    throw new Error('value is invalid or undefined in createAsyncEnum');
+  }
+
+  return {
+    DEFAULT: value,
+    REQUESTED: `${value}_REQUESTED`,
+    SUCCEEDED: `${value}_SUCCEEDED`,
+    FAILED: `${value}_FAILED`,
+    DONE: `${value}_DONE`,
+  };
+};
 
 /**
  * Generates constants based off a namespace, appending the verb in a
@@ -33,7 +39,7 @@ const createConstantsImpl = ({
     const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
     const value = `@${scope}/${VERB}`;
 
-    a[key] = invoccationType === 'async' ? createAsyncConstants(value) : value;
+    a[key] = invoccationType === 'async' ? createAsyncEnum(value) : value;
     return a;
   }, {});
 };
