@@ -1,5 +1,13 @@
 const SPECIAL_CHARS_REGEX = /[^A-Z0-9_]/gi;
 
+const createAsyncConstants = (value) => ({
+  DEFAULT: value,
+  REQUESTED: `${value}_REQUESTED`,
+  SUCCEEDED: `${value}_SUCCEEDED`,
+  FAILED: `${value}_FAILED`,
+  DONE: `${value}_DONE`,
+});
+
 /**
  * Generates constants based off a namespace, appending the verb in a
  * consistent manner.
@@ -25,14 +33,7 @@ const createConstantsImpl = ({
     const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
     const value = `@${scope}/${VERB}`;
 
-    if (invoccationType === 'async') {
-      a[`${key}_REQUESTED`] = `${value}_REQUESTED`;
-      a[`${key}_SUCCEEDED`] = `${value}_SUCCEEDED`;
-      a[`${key}_FAILED`] = `${value}_FAILED`;
-      a[`${key}_DONE`] = `${value}_DONE`;
-    }
-
-    a[key] = value;
+    a[key] = invoccationType === 'async' ? createAsyncConstants(value) : value;
     return a;
   }, {});
 };

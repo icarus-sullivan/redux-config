@@ -7,7 +7,9 @@
     "lib/*"
   ],
   "scripts": {
-    "lint": "eslint src",
+    "lint": "npx eslint",
+    "lint:src": "yarn lint src",
+    "test": "npx jest --config .jest/config.js",
     "prepare": "npx babel src --out-dir lib"
   },
   "repository": {
@@ -32,12 +34,14 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^24.9.0",
     "prettier": "^1.18.2"
   },
   "dependencies": {
