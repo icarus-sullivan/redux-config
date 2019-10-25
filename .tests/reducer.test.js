@@ -60,15 +60,37 @@ harness(runner, [
       {
         name: 'namespace, no initial, no existing state',
         params: [
-          createConfig({
+          {
             namespace: 'profile',
-          }),
-          null,
+            mapping: {
+              MISSING: (s) => s,
+            },
+          },
+          {
+            profile: null,
+          },
         ],
       },
       {
         name: 'no namespace, not initial, no existing state',
         params: [createConfig(), MOCK_PAYLOAD],
+      },
+      {
+        name: 'namespace, with initial',
+        params: [
+          createConfig({
+            namespace: 'profile',
+            initial: {
+              userId: '123',
+            },
+          }),
+          {
+            profile: {
+              injected: true,
+              userId: '123',
+            },
+          },
+        ],
       },
       {
         name: 'multiple configs',

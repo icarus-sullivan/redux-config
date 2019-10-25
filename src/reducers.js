@@ -1,26 +1,19 @@
-const _reducer = (mapping, initial = null) => (
-  state = initial,
-  { type, payload },
-) => mapping[type](state, payload) || state;
-
-// TODO: fix this
-const createReducerImpl = ({ namespace, mapping, initial = null }) => (
-  state = initial,
-  { type, payload },
-) => {
-  try {
-    const r = _reducer(mapping, initial);
+const createReducerImpl = ({ namespace, mapping, initial = null }) => {
+  return (state, { type, payload }) => {
+    const defaultHandler = (st) => st;
+    const handler = mapping[type] || defaultHandler;
     if (namespace) {
-      console.log('namespaced', namespace, state);
+      const s = state && state[namespace] ? state[namespace] : initial;
+
       return {
         ...state,
-        [namespace]: r(state[namespace], payload),
+        [namespace]: handler(s, payload),
       };
     }
-    return r(state, payload);
-  } catch (err) {
-    return state;
-  }
+
+    const s = state || initial;
+    return handler(s, payload);
+  };
 };
 
 export const createReducer = (configs) => {
