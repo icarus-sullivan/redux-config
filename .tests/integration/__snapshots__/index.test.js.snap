@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration works with redux 1`] = `
+Array [
+  Object {
+    "comments": Object {
+      "loading": true,
+    },
+  },
+  Object {
+    "payload": "hello world",
+    "type": "@COMMENT/POST_REQUESTED",
+  },
+]
+`;
+
+exports[`Integration works with redux 2`] = `
+Array [
+  Object {
+    "comments": Object {
+      "id": "111-111-111-111",
+      "success": true,
+    },
+  },
+  Object {
+    "payload": Object {
+      "id": "111-111-111-111",
+      "success": true,
+    },
+    "type": "@COMMENT/POST_SUCCEEDED",
+  },
+]
+`;
+
+exports[`Integration works with redux 3`] = `
+Array [
+  Object {
+    "comments": Object {
+      "id": "111-111-111-111",
+      "loading": false,
+      "success": true,
+    },
+  },
+  Object {
+    "type": "@COMMENT/POST_DONE",
+  },
+]
+`;
