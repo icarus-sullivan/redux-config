@@ -44,7 +44,7 @@ const Constants = createConstants([
 
 const postActions = createActions({
   createPost: {
-    type: Constants.POSTS_CREATE,
+    type: Constants.POSTS_CREATE.DEFAULT,
     invoccationType: 'async',
     fn: async (post) =>
       new Promise((resolve) => {
@@ -64,19 +64,19 @@ const postActions = createActions({
 const postReducer = createReducer({
   namespace: 'posts',
   mapping: {
-    [Constants.POSTS_CREATE_REQUESTED]: (state) => ({
+    [Constants.POSTS_CREATE.REQUESTED]: (state) => ({
       ...state,
       loading: true,
     }),
-    [Constants.POSTS_CREATE_SUCCEEDED]: (state, post) => ({
+    [Constants.POSTS_CREATE.SUCCEEDED]: (state, post) => ({
       ...state,
       ...post,
     }),
-    [Constants.POSTS_CREATE_FAILED]: (state, error) => ({
+    [Constants.POSTS_CREATE.FAILED]: (state, error) => ({
       ...state,
       error: error.message,
     }),
-    [Constants.POSTS_CREATE_DONE]: (state) => ({
+    [Constants.POSTS_CREATE.DONE]: (state) => ({
       ...state,
       loading: false,
     }),
