@@ -31,7 +31,7 @@ const createAction = ({ type, payload, dispatch }) => (...args) =>
  *
  * {
  *   someAsyncAction: {
- *     invoccationType: 'async',
+ *     invocationType: 'async',
  *     type: 'MY_TYPE',
  *     fn: async () => ...
  *   },
@@ -86,10 +86,10 @@ export const createActions = (obj) => (dispatch) =>
       return a;
     }
 
-    const invoccationType = value.invoccationType || 'sync';
+    const invocationType = value.invocationType || 'sync';
     const mergeDispatch = { ...value, dispatch };
 
-    if (invoccationType === 'async') {
+    if (invocationType === 'async') {
       a[key] = createAsyncAction(mergeDispatch);
       return a;
     }

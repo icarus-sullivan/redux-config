@@ -73,7 +73,7 @@ harness(runner, [
         name: 'creates enums',
         params: [
           {
-            invoccationType: 'async',
+            invocationType: 'async',
             namespace: 'accounts',
             verbs: ['list', 'update'],
           },

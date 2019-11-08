@@ -20,12 +20,12 @@ Output:
 ```
 
 # createConstants(config | config[]) => { key: string }
-Creates dynamic constants, or multiple constants depending on invoccationType.
+Creates dynamic constants, or multiple constants depending on invocationType.
 
 Config:
 | key| value | required | default |
 |--|--|--|--|
-| invoccationType | string | - | 'sync' |
+| invocationType | string | - | 'sync' |
 | namespace | string | yes | - |
 | verbs | string[] | yes | - |
 
@@ -36,7 +36,7 @@ Async constants will create 5 total values per verb. These constants are used in
 import { createConstants } from '@sullivan/redux-config';
 
 const constants = createConstants({
-  invoccationType: 'async',
+  invocationType: 'async',
   namespace: 'post',
   verbs: ['create', 'update', 'delete'],
 });
@@ -96,7 +96,7 @@ const constants = createConstants([
     verbs: ['view', 'navigate'],
   },
   {
-    invoccationType: 'async',
+    invocationType: 'async',
     namespace: 'post',
     verbs: ['create'],
   },

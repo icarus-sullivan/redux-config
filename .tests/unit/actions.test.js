@@ -99,7 +99,7 @@ harness(runner, [
         name: 'success',
         params: [
           {
-            invoccationType: 'async',
+            invocationType: 'async',
             type: ASYNC_TYPES.DEFAULT,
             fn: async (arg) => ({
               success: true,
@@ -123,7 +123,7 @@ harness(runner, [
         name: 'normal error',
         params: [
           {
-            invoccationType: 'async',
+            invocationType: 'async',
             type: ASYNC_TYPES.DEFAULT,
             fn: async () => {
               throw new Error('failed');
@@ -146,7 +146,7 @@ harness(runner, [
         name: 'error override',
         params: [
           {
-            invoccationType: 'async',
+            invocationType: 'async',
             type: ASYNC_TYPES.DEFAULT,
             errorTransform: (err) => ({
               error: err.message,

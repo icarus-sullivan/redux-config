@@ -1,7 +1,7 @@
 const { createConstants } = require('../../lib');
 
 const constants = createConstants({
-  invoccationType: 'async',
+  invocationType: 'async',
   namespace: 'post',
   verbs: ['create', 'update', 'delete'],
 });

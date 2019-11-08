@@ -6,7 +6,7 @@ const constants = createConstants([
     verbs: ['view', 'navigate'],
   },
   {
-    invoccationType: 'async',
+    invocationType: 'async',
     namespace: 'post',
     verbs: ['create'],
   },

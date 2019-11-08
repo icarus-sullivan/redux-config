@@ -28,7 +28,7 @@ export const createAsyncEnum = (value) => {
  * @param {*} param0
  */
 const createConstantsImpl = ({
-  invoccationType = 'sync',
+  invocationType = 'sync',
   namespace,
   verbs = [],
 }) => {
@@ -39,7 +39,7 @@ const createConstantsImpl = ({
     const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
     const value = `@${scope}/${VERB}`;
 
-    a[key] = invoccationType === 'async' ? createAsyncEnum(value) : value;
+    a[key] = invocationType === 'async' ? createAsyncEnum(value) : value;
     return a;
   }, {});
 };
@@ -50,7 +50,7 @@ const createConstantsImpl = ({
  *
  * [
  *   {
- *     invoccationType: 'async',
+ *     invocationType: 'async',
  *     namespace: 'posts',
  *     verbs: ['created', 'deleted'],
  *   },

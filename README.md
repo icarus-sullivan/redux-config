@@ -36,7 +36,7 @@ const { createReducer, createConstants, createActions } = require('@sullivan/red
 
 const Constants = createConstants([
   {
-    invoccationType: 'async',
+    invocationType: 'async',
     namespace: 'posts',
     verbs: ['create', 'update'],
   },
@@ -45,7 +45,7 @@ const Constants = createConstants([
 const postActions = createActions({
   createPost: {
     type: Constants.POSTS_CREATE.DEFAULT,
-    invoccationType: 'async',
+    invocationType: 'async',
     fn: async (post) =>
       new Promise((resolve) => {
         setTimeout(

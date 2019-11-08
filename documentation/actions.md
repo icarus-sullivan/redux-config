@@ -8,7 +8,7 @@ Options:
 | key| value | required | default |
 |--|--|--|--|
 | type | string | yes | - |
-| invoccationType | string | - | 'sync' |
+| invocationType | string | - | 'sync' |
 | fn | function | async only | - |
 | errorTransform | AsyncFunction | - | - |
 | payload | any | static only | - |
@@ -29,7 +29,7 @@ const fetch = (arg) => new Promise((resolve) => {
 
 const actions = createActions({
   fetchPage: {
-    invoccationType: 'async',
+    invocationType: 'async',
     type: 'PAGE',
     fn: async (url) => fetch(url),
   },
@@ -54,7 +54,7 @@ If there are cases in which we expect an error to occur and want to respond with
 
 const actions = createActions({
   fetchPage: {
-    invoccationType: 'async',
+    invocationType: 'async',
     type: 'PAGE',
     errorTransform: (e) => ({
       error: e.message,
