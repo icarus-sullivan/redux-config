@@ -3,7 +3,7 @@
 # createAsyncEnum(string)
 
 ```javascript
-const { createAsyncEnum } = require('../../lib');
+const { createAsyncEnum } = require('@sullivan/redux-config');
 
 const constants = createAsyncEnum('COMMENT');
 
