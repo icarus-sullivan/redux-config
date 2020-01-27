@@ -3,8 +3,11 @@
 		[
 			"@babel/preset-env",
 			{
-				"targets": "> 0.25%, not dead"
+				"targets": {
+					"browsers": ["last 2 Chrome versions"]
+				}
 			}
 		]
-	]
+	],
+	"plugins": ["@babel/plugin-transform-async-to-generator"]
 }

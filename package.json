@@ -1,6 +1,6 @@
 {
   "name": "@sullivan/redux-config",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Reduces redux boilerplate with a configurable structure",
   "main": "lib/index.js",
   "files": [
@@ -10,6 +10,7 @@
     "lint": "npx eslint",
     "lint:src": "yarn lint src",
     "test": "npx jest --config .jest/config.js",
+    "test:async": "node examples/actions/asyncSuccess",
     "prepare": "npx babel src --out-dir lib"
   },
   "repository": {
@@ -31,11 +32,14 @@
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.2",
+    "@babel/plugin-transform-async-to-generator": "^7.8.3",
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
+    "@babel/runtime": "^7.8.3",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "core-js": "^3.6.4",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.4.0",
@@ -44,9 +48,5 @@
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "redux": "^4.0.4"
-  },
-  "dependencies": {
-    "core-js": "^3.2.1",
-    "regenerator-runtime": "^0.13.3"
   }
 }

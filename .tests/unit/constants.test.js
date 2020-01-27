@@ -1,4 +1,4 @@
-import { createConstants, createAsyncEnum } from '../../src';
+import { createConstants, createAsyncEnum } from '../../lib';
 import harness from './harness';
 
 const runner = (config, expectation) => () =>

@@ -1,4 +1,4 @@
-import { createReducer } from '../../src';
+import { createReducer } from '../../lib';
 import harness from './harness';
 
 const MOCK_TYPE = 'TEST';

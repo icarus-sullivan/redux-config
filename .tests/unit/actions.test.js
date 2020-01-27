@@ -1,4 +1,4 @@
-import { createActions, createAsyncEnum } from '../../src';
+import { createActions, createAsyncEnum } from '../../lib';
 import harness from './harness';
 
 const MOCK_TYPE = 'TEST';

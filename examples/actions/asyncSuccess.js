@@ -1,4 +1,4 @@
-const { createActions } = require('../../');
+const { createActions } = require('../../lib');
 
 const dispatch = console.log;
 
@@ -11,7 +11,7 @@ const actions = createActions({
   fetchPage: {
     invocationType: 'async',
     type: 'PAGE',
-    fn: async (url) => fetch(url),
+    fn: (url) => fetch(url),
   },
 });
 

@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import { createConstants, createActions, createReducer } from '../../src';
+import { createConstants, createActions, createReducer } from '../../lib';
 
 describe('Integration', () => {
   it('works with redux', () => {
