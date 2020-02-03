@@ -159,3 +159,46 @@ Output:
 { type: 'ENABLE', payload: [ 1, 2, 3 ] }
 { type: 'ENABLE', payload: { foo: 'bar' } }
   ```
+
+
+# actionCreator
+Configure a single action for use - follow the same convention as `createActions`.
+
+Options:
+
+| key| value | required | default |
+|--|--|--|--|
+| type | string | yes | - |
+| invocationType | string | - | 'sync' |
+| fn | function | async only | - |
+| errorTransform | AsyncFunction | - | - |
+| payload | any | static only | - |
+ 
+
+```javascript
+import { actionCreator } from '@sullivan/redux-config';
+
+const dispatch = console.log;
+
+const fetch = (arg) => new Promise((resolve) => {
+  setTimeout(() => resolve({ url: arg, data: {}}), 200)
+});
+
+const actions = actionCreator({
+  invocationType: 'async',
+  type: 'PAGE',
+  fn: async (url) => fetch(url),
+});
+
+const fetchPage = actions(dispatch);
+
+fetchPage('http://content.json');
+```
+
+Output:
+```bash
+{ type: 'PAGE_REQUESTED', payload: 'http://content.json' }
+{ type: 'PAGE_SUCCEEDED',
+  payload: { url: 'http://content.json', data: {} } }
+{ type: 'PAGE_DONE' }
+```

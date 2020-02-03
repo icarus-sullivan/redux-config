@@ -1,6 +1,6 @@
 {
   "name": "@sullivan/redux-config",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Reduces redux boilerplate with a configurable structure",
   "main": "lib/index.js",
   "files": [
@@ -11,6 +11,7 @@
     "lint:src": "yarn lint src",
     "test": "npx jest --config .jest/config.js",
     "test:async": "node examples/actions/asyncSuccess",
+    "test:creator": "node examples/actions/actionCreator",
     "prepare": "npx babel src --out-dir lib"
   },
   "repository": {

@@ -9,7 +9,7 @@ const fetch = (arg) =>
 
 const actions = createActions({
   fetchPage: {
-    invocationType: 'async',
+    invocation: 'async',
     type: 'PAGE',
     fn: (url) => fetch(url),
   },

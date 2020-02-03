@@ -77,24 +77,27 @@ const createAsyncAction = ({
 const createFnFunction = ({ dispatch, fn }) => (...args) =>
   dispatch(fn(...args));
 
+export const actionCreator = (value) => (dispatch) => {
+  // We were passed a function, automatically wrap it in dispatch
+  // when it is invoked
+  if (typeof value === 'function') {
+    return createFnFunction({ dispatch, fn: value });
+  }
+
+  // TODO: remove invocationType => invocation
+  const invoke = value.invocation || value.invocationType || 'sync';
+  const mergeDispatch = { ...value, dispatch };
+
+  if (invoke === 'async') {
+    return createAsyncAction(mergeDispatch);
+  }
+
+  // Default to a sync definition
+  return createAction(mergeDispatch);
+};
+
 export const createActions = (obj) => (dispatch) =>
   Object.entries(obj).reduce((a, [key, value]) => {
-    // We were passed a function, automatically wrap it in dispatch
-    // when it is invoked
-    if (typeof value === 'function') {
-      a[key] = createFnFunction({ dispatch, fn: value });
-      return a;
-    }
-
-    const invocationType = value.invocationType || 'sync';
-    const mergeDispatch = { ...value, dispatch };
-
-    if (invocationType === 'async') {
-      a[key] = createAsyncAction(mergeDispatch);
-      return a;
-    }
-
-    // Default to a sync definition
-    a[key] = createAction(mergeDispatch);
+    a[key] = actionCreator(value)(dispatch);
     return a;
   }, {});

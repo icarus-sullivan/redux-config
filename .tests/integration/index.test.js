@@ -6,7 +6,7 @@ describe('Integration', () => {
     expect.assertions(3);
     const Constants = createConstants([
       {
-        invocationType: 'async',
+        invocation: 'async',
         namespace: 'comment',
         verbs: ['post'],
       },
@@ -34,7 +34,7 @@ describe('Integration', () => {
 
     const actionCreator = createActions({
       postComment: {
-        invocationType: 'async',
+        invocation: 'async',
         type: Constants.COMMENT_POST.DEFAULT,
         fn: async (msg) => {
           return {

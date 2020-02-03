@@ -18,7 +18,6 @@ npm i --save @sullivan/redux-config
 - [Actions][action]
 - [Reducers][reducer]
 
-
 [link-download]: https://img.shields.io/npm/dt/@sullivan/redux-config
 [link-version]: https://img.shields.io/npm/v/@sullivan/redux-config.svg
 [link-license]: https://img.shields.io/npm/l/@sullivan/redux-config.svg
@@ -26,3 +25,9 @@ npm i --save @sullivan/redux-config
 [action]: https://github.com/icarus-sullivan/redux-config/blob/master/documentation/actions.md
 [constant]: https://github.com/icarus-sullivan/redux-config/blob/master/documentation/constants.md
 [reducer]: https://github.com/icarus-sullivan/redux-config/blob/master/documentation/reducers.md
+
+
+## Changelog
+
+**0.5.3**
+- Expose the actionCreator for one-off actions

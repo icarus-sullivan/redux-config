@@ -28,18 +28,20 @@ export const createAsyncEnum = (value) => {
  * @param {*} param0
  */
 const createConstantsImpl = ({
-  invocationType = 'sync',
+  invocationType,
+  invocation, // TODO: backward compat, clear in next version
   namespace,
   verbs = [],
 }) => {
   const scope = namespace.toUpperCase();
+  const invoke = invocation || invocationType || 'sync';
 
   return verbs.reduce((a, b) => {
     const VERB = b.toUpperCase();
     const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
     const value = `@${scope}/${VERB}`;
 
-    a[key] = invocationType === 'async' ? createAsyncEnum(value) : value;
+    a[key] = invoke === 'async' ? createAsyncEnum(value) : value;
     return a;
   }, {});
 };
