@@ -1,12 +1,13 @@
-import { createActions, createAsyncEnum } from '../../lib';
+import { actions } from '../../lib';
+import { asEnum } from '../../lib/constants';
 import harness from './harness';
 
 const MOCK_TYPE = 'TEST';
-const ASYNC_TYPES = createAsyncEnum(MOCK_TYPE);
+const ASYNC_TYPES = asEnum(MOCK_TYPE);
 
 export const runner = (config, expectations, ...args) => async () => {
   const dispatch = jest.fn();
-  const created = createActions({ action: config })(dispatch);
+  const created = actions({ action: config })(dispatch);
 
   await created.action(...args);
 

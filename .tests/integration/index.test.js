@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware } from 'redux';
-import { createConstants, createActions, createReducer } from '../../lib';
+import { constants, actions, reducers } from '../../lib';
 
 describe('Integration', () => {
   it('works with redux', () => {
     expect.assertions(3);
-    const Constants = createConstants([
+    const Constants = constants([
       {
         invocation: 'async',
         namespace: 'comment',
@@ -16,31 +16,34 @@ describe('Integration', () => {
       },
     ]);
 
-    const reducer = createReducer({
-      namespace: 'comments',
-      mapping: {
-        [Constants.COMMENT_POST.REQUESTED]: (state) => ({
-          loading: true,
-        }),
-        [Constants.COMMENT_POST.SUCCEEDED]: (state, post) => ({
-          ...post,
-        }),
-        [Constants.COMMENT_POST.DONE]: (state) => ({
-          ...state,
-          loading: false,
-        }),
+    const reducer = reducers([
+      {
+        type: Constants.COMMENT_POST.REQUESTED,
+        path: 'comments.loading',
+        fn: () => true,
       },
-    });
+      {
+        type: Constants.COMMENT_POST.SUCCEEDED,
+        path: 'comments.data',
+        fn: (state = [], post) => [...state, ...post],
+      },
+      {
+        type: Constants.COMMENT_POST.DONE,
+        path: 'comments.loading',
+        fn: () => false,
+      },
+    ]);
 
-    const actionCreator = createActions({
+    const actionCreator = actions({
       postComment: {
         invocation: 'async',
         type: Constants.COMMENT_POST.DEFAULT,
         fn: async (msg) => {
-          return {
-            success: true,
-            id: '111-111-111-111',
-          };
+          return [
+            {
+              id: '111-111-111-111',
+            },
+          ];
         },
       },
     });
@@ -48,7 +51,7 @@ describe('Integration', () => {
     const logger = ({ getState }) => (next) => (action) => {
       const returnVal = next(action);
 
-      expect([ getState(), action]).toMatchSnapshot();
+      expect([getState(), action]).toMatchSnapshot();
       return returnVal;
     };
 

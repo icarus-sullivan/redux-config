@@ -1,3 +1,5 @@
+import { asEnum } from './constants';
+
 /**
  * A sync action is an object defined like below
  *
@@ -20,7 +22,7 @@
  *
  * @param {*} param0
  */
-const createAction = ({ type, payload, dispatch }) => (...args) =>
+const base = ({ type, payload, dispatch }) => (...args) =>
   dispatch({
     type,
     payload: payload || (args.length === 1 ? args[0] : args),
@@ -31,7 +33,7 @@ const createAction = ({ type, payload, dispatch }) => (...args) =>
  *
  * {
  *   someAsyncAction: {
- *     invocationType: 'async',
+ *     invocation: 'async',
  *     type: 'MY_TYPE',
  *     fn: async () => ...
  *   },
@@ -39,22 +41,20 @@ const createAction = ({ type, payload, dispatch }) => (...args) =>
  *
  * @param {*} param0
  */
-const createAsyncAction = ({
-  type,
-  errorTransform = (e) => e,
-  dispatch,
-  fn,
-}) => async (...args) => {
+const asAsync = ({ type, errorTransform = (e) => e, dispatch, fn }) => async (
+  ...args
+) => {
+  const ENUM = typeof type === 'object' ? type : asEnum(type);
   try {
     dispatch({
-      type: `${type}_REQUESTED`,
+      type: ENUM.REQUESTED,
       payload: args.length === 1 ? args[0] : args,
     });
-    dispatch({ type: `${type}_SUCCEEDED`, payload: await fn(...args) });
-    dispatch({ type: `${type}_DONE` });
+    dispatch({ type: ENUM.SUCCEEDED, payload: await fn(...args) });
+    dispatch({ type: ENUM.DONE });
   } catch (e) {
-    dispatch({ type: `${type}_FAILED`, payload: await errorTransform(e) });
-    dispatch({ type: `${type}_DONE` });
+    dispatch({ type: ENUM.FAILED, payload: await errorTransform(e) });
+    dispatch({ type: ENUM.DONE });
   }
 };
 
@@ -74,30 +74,33 @@ const createAsyncAction = ({
  *
  * @param {*} param0
  */
-const createFnFunction = ({ dispatch, fn }) => (...args) =>
-  dispatch(fn(...args));
+const asFunction = ({ dispatch, fn }) => (...args) => dispatch(fn(...args));
 
-export const actionCreator = (value) => (dispatch) => {
+const impl = (value) => (dispatch) => {
   // We were passed a function, automatically wrap it in dispatch
   // when it is invoked
   if (typeof value === 'function') {
-    return createFnFunction({ dispatch, fn: value });
+    return asFunction({ dispatch, fn: value });
   }
 
-  // TODO: remove invocationType => invocation
-  const invoke = value.invocation || value.invocationType || 'sync';
+  const invoke = value.invocation || 'sync';
   const mergeDispatch = { ...value, dispatch };
 
   if (invoke === 'async') {
-    return createAsyncAction(mergeDispatch);
+    return asAsync(mergeDispatch);
   }
 
   // Default to a sync definition
-  return createAction(mergeDispatch);
+  return base(mergeDispatch);
 };
 
-export const createActions = (obj) => (dispatch) =>
-  Object.entries(obj).reduce((a, [key, value]) => {
-    a[key] = actionCreator(value)(dispatch);
+const mergeActions = (src, dispatch) =>
+  Object.entries(src).reduce((a, [key, value]) => {
+    a[key] = impl(value)(dispatch);
     return a;
   }, {});
+
+export const actions = (obj) => (dispatch) =>
+  Array.isArray(obj)
+    ? obj.reduce((a, b) => ({ ...a, ...mergeActions(b, dispatch) }), {})
+    : mergeActions(obj, dispatch);

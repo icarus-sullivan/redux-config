@@ -1,8 +1,8 @@
 const SPECIAL_CHARS_REGEX = /[^A-Z0-9_]/gi;
 
-export const createAsyncEnum = (value) => {
+export const asEnum = (value) => {
   if (!value) {
-    throw new Error('value is invalid or undefined in createAsyncEnum');
+    throw new Error('value is invalid or undefined');
   }
 
   return {
@@ -14,56 +14,20 @@ export const createAsyncEnum = (value) => {
   };
 };
 
-/**
- * Generates constants based off a namespace, appending the verb in a
- * consistent manner.
- *
- * {
- *   namespace: 'posts',
- *   verbs: ['navigated'],
- * }
- *
- * => { POSTS_NAVIGATED: '@POSTS/NAVIGATED' }
- *
- * @param {*} param0
- */
-const createConstantsImpl = ({
-  invocationType,
-  invocation, // TODO: backward compat, clear in next version
-  namespace,
-  verbs = [],
-}) => {
+const impl = ({ invocation = 'sync', namespace = '', verbs = [] }) => {
   const scope = namespace.toUpperCase();
-  const invoke = invocation || invocationType || 'sync';
 
   return verbs.reduce((a, b) => {
     const VERB = b.toUpperCase();
     const key = `${scope}_${VERB}`.replace(SPECIAL_CHARS_REGEX, '_');
     const value = `@${scope}/${VERB}`;
 
-    a[key] = invoke === 'async' ? createAsyncEnum(value) : value;
+    a[key] = invocation === 'async' ? asEnum(value) : value;
     return a;
   }, {});
 };
 
-/**
- * Creates constants based on config, this is useful in cases where you want
- * to define both async and sync constants with a single call.
- *
- * [
- *   {
- *     invocationType: 'async',
- *     namespace: 'posts',
- *     verbs: ['created', 'deleted'],
- *   },
- *   {
- *     namespace: 'posts',
- *     verbs: ['navigated'],
- *   }
- * ]
- * @param {*} config
- */
-export const createConstants = (config) =>
+export const constants = (config) =>
   Array.isArray(config)
-    ? config.reduce((a, b) => ({ ...a, ...createConstantsImpl(b) }), {})
-    : createConstantsImpl(config);
+    ? config.reduce((a, b) => ({ ...a, ...impl(b) }), {})
+    : impl(config);

@@ -18,15 +18,20 @@ exports[`Integration works with redux 2`] = `
 Array [
   Object {
     "comments": Object {
-      "id": "111-111-111-111",
-      "success": true,
+      "data": Array [
+        Object {
+          "id": "111-111-111-111",
+        },
+      ],
+      "loading": true,
     },
   },
   Object {
-    "payload": Object {
-      "id": "111-111-111-111",
-      "success": true,
-    },
+    "payload": Array [
+      Object {
+        "id": "111-111-111-111",
+      },
+    ],
     "type": "@COMMENT/POST_SUCCEEDED",
   },
 ]
@@ -36,9 +41,12 @@ exports[`Integration works with redux 3`] = `
 Array [
   Object {
     "comments": Object {
-      "id": "111-111-111-111",
+      "data": Array [
+        Object {
+          "id": "111-111-111-111",
+        },
+      ],
       "loading": false,
-      "success": true,
     },
   },
   Object {

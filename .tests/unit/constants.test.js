@@ -1,24 +1,10 @@
-import { createConstants, createAsyncEnum } from '../../lib';
+import { constants, asEnum } from '../../lib/constants';
 import harness from './harness';
 
 const runner = (config, expectation) => () =>
-  expect(createConstants(config)).toEqual(expectation);
+  expect(constants(config)).toEqual(expectation);
 
-describe('Async Constant Enums', () => {
-  it('creates expected', () => {
-    expect(createAsyncEnum('TEST')).toEqual({
-      DEFAULT: 'TEST',
-      DONE: 'TEST_DONE',
-      FAILED: 'TEST_FAILED',
-      REQUESTED: 'TEST_REQUESTED',
-      SUCCEEDED: 'TEST_SUCCEEDED',
-    });
-  });
-
-  it('throws with invalid param', () => {
-    expect(createAsyncEnum).toThrow();
-  });
-});
+it('missing async value throws', () => expect(asEnum).toThrow(Error));
 
 harness(runner, [
   {
@@ -78,8 +64,8 @@ harness(runner, [
             verbs: ['list', 'update'],
           },
           {
-            ACCOUNTS_LIST: createAsyncEnum('@ACCOUNTS/LIST'),
-            ACCOUNTS_UPDATE: createAsyncEnum('@ACCOUNTS/UPDATE'),
+            ACCOUNTS_LIST: asEnum('@ACCOUNTS/LIST'),
+            ACCOUNTS_UPDATE: asEnum('@ACCOUNTS/UPDATE'),
           },
         ],
       },

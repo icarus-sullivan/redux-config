@@ -1,118 +1,93 @@
 [Home](https://github.com/icarus-sullivan/redux-config/blob/master/README.md)
 
-# createAsyncEnum(string)
+# constants(config | config[]) => { key: string }
+Creates dynamic constants, or multiple constants for project uniformity.
 
+### config:
+| key| value | required | description |
+|--|--|--|--|
+| invocation | string | no | Whether to create an async enum or not |
+| namespace | string | yes | The prefix for the constants |
+| verbs | string[] | yes | The suffix for the constants |
+
+
+### Simple Constants
 ```javascript
-const { createAsyncEnum } = require('@sullivan/redux-config');
+const { constants } = require('@sullivan/redux-config');
 
-const constants = createAsyncEnum('COMMENT');
+const C = constants({
+  namespace: 'test',
+  verbs: ['run', 'finish'],
+});
 
-console.log(constants);
+console.log(C);
 ```
 
 Output:
-```bash
-{ DEFAULT: 'COMMENT',
-  REQUESTED: 'COMMENT_REQUESTED',
-  SUCCEEDED: 'COMMENT_SUCCEEDED',
-  FAILED: 'COMMENT_FAILED',
-  DONE: 'COMMENT_DONE' }
+```javascript
+{ TEST_RUN: '@TEST/RUN', TEST_FINISH: '@TEST/FINISH' }
 ```
-
-# createConstants(config | config[]) => { key: string }
-Creates dynamic constants, or multiple constants depending on invocationType.
-
-Config:
-| key| value | required | default |
-|--|--|--|--|
-| invocationType | string | - | 'sync' |
-| namespace | string | yes | - |
-| verbs | string[] | yes | - |
 
 ### Async Declarations 
-Async constants will create 5 total values per verb. These constants are used in state mangement when async operations are called. 
+Async constants will create an enum for use with asynchronouse actions. These constants are used to assist reducer state mangement when dispatched.
 
 ```javascript
-import { createConstants } from '@sullivan/redux-config';
+import { constants } from '@sullivan/redux-config';
 
-const constants = createConstants({
-  invocationType: 'async',
+const C = constants({
+  invocation: 'async',
   namespace: 'post',
-  verbs: ['create', 'update', 'delete'],
+  verbs: ['test'],
 });
 
-console.log(constants);
+console.log(C);
 ```
 
 Output:
-```bash
-{ POST_CREATE:
-   { DEFAULT: '@POST/CREATE',
-     REQUESTED: '@POST/CREATE_REQUESTED',
-     SUCCEEDED: '@POST/CREATE_SUCCEEDED',
-     FAILED: '@POST/CREATE_FAILED',
-     DONE: '@POST/CREATE_DONE' },
-  POST_UPDATE:
-   { DEFAULT: '@POST/UPDATE',
-     REQUESTED: '@POST/UPDATE_REQUESTED',
-     SUCCEEDED: '@POST/UPDATE_SUCCEEDED',
-     FAILED: '@POST/UPDATE_FAILED',
-     DONE: '@POST/UPDATE_DONE' },
-  POST_DELETE:
-   { DEFAULT: '@POST/DELETE',
-     REQUESTED: '@POST/DELETE_REQUESTED',
-     SUCCEEDED: '@POST/DELETE_SUCCEEDED',
-     FAILED: '@POST/DELETE_FAILED',
-     DONE: '@POST/DELETE_DONE' } }
+```javascript
+{
+  POST_TEST: {
+    DEFAULT: '@POST/TEST',
+    REQUESTED: '@POST/TEST_REQUESTED',
+    SUCCEEDED: '@POST/TEST_SUCCEEDED',
+    FAILED: '@POST/TEST_FAILED',
+    DONE: '@POST/TEST_DONE'
+  }
+}
 ```
 
-### Sync Declarations
-Sync constants only create one value, but do so in a uniform format for consistency.
+### Namespaced Types
+You don't need to choose async or sync invocations, you can define them within the same constants call. 
 
 ```javascript
-import { createConstants } from '@sullivan/redux-config';
+import { constants } from '@sullivan/redux-config';
 
-const constants = createConstants({
-  namespace: 'post',
-  verbs: ['view', 'navigate'],
-});
-
-console.log(constants);
-```
-
-Output:
-```bash
-{ POST_VIEW: '@POST/VIEW', POST_NAVIGATE: '@POST/NAVIGATE' }
-```
-
-### Multiple Declarations
-
-```javascript
-import { createConstants } from '@sullivan/redux-config';
-
-const constants = createConstants([
+const C = constants([
   {
     namespace: 'post',
     verbs: ['view', 'navigate'],
   },
   {
-    invocationType: 'async',
+    invocation: 'async',
     namespace: 'post',
-    verbs: ['create'],
+    verbs: ['fetch'],
   },
 ]);
 
-console.log(constants);
+console.log(C);
 ```
 
 Output:
-```bash
-{ POST_VIEW: '@POST/VIEW',
+```javascript
+{
+  POST_VIEW: '@POST/VIEW',
   POST_NAVIGATE: '@POST/NAVIGATE',
-  POST_CREATE:
-   { DEFAULT: '@POST/CREATE',
-     REQUESTED: '@POST/CREATE_REQUESTED',
-     SUCCEEDED: '@POST/CREATE_SUCCEEDED',
-     FAILED: '@POST/CREATE_FAILED',
-     DONE: '@POST/CREATE_DONE' } }
+  POST_FETCH: {
+    DEFAULT: '@POST/FETCH',
+    REQUESTED: '@POST/FETCH_REQUESTED',
+    SUCCEEDED: '@POST/FETCH_SUCCEEDED',
+    FAILED: '@POST/FETCH_FAILED',
+    DONE: '@POST/FETCH_DONE'
+  }
+}
 ```

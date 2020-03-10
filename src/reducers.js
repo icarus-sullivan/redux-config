@@ -1,24 +1,25 @@
-const createReducerImpl = ({ namespace, mapping, initial = null }) => {
-  return (state, { type, payload }) => {
-    const defaultHandler = (st) => st;
-    const handler = mapping[type] || defaultHandler;
-    if (namespace) {
-      const s = state && state[namespace] ? state[namespace] : initial;
+import { update } from './mutation';
 
-      return {
-        ...state,
-        [namespace]: handler(s, payload),
-      };
+const impl = ({ type, path, fn }) => ({
+  [type]: (state, payload) => update(state, path, (d) => fn(d, payload)),
+});
+
+export const reducers = (conf) => {
+  const delegates = Array.isArray(conf) ? conf : [conf];
+
+  const handlers = delegates.reduce(
+    (a, b) => ({
+      ...a,
+      ...impl(b),
+    }),
+    {},
+  );
+
+  return (state, action) => {
+    const handler = handlers[action.type];
+    if (handler) {
+      return handler(state, action.payload);
     }
-
-    const s = state || initial;
-    return handler(s, payload);
+    return state;
   };
-};
-
-export const createReducer = (configs) => {
-  const configurations = Array.isArray(configs) ? configs : [configs];
-
-  const reducers = configurations.map(createReducerImpl);
-  return (state, action) => reducers.reduce((s, fn) => fn(s, action), state);
 };

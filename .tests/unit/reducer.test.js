@@ -1,4 +1,4 @@
-import { createReducer } from '../../lib';
+import { reducers } from '../../lib';
 import harness from './harness';
 
 const MOCK_TYPE = 'TEST';
@@ -6,18 +6,8 @@ const MOCK_PAYLOAD = {
   injected: true,
 };
 
-const createConfig = (options) => ({
-  ...options,
-  mapping: {
-    [MOCK_TYPE]: (state, payload) => ({
-      ...state,
-      ...payload,
-    }),
-  },
-});
-
-const runner = (config, expectation, initial) => () => {
-  const reducer = createReducer(config);
+const runner = (initial, config, expectation) => () => {
+  const reducer = reducers(config);
   expect(reducer(initial, { type: MOCK_TYPE, payload: MOCK_PAYLOAD })).toEqual(
     expectation,
   );
@@ -25,102 +15,52 @@ const runner = (config, expectation, initial) => () => {
 
 harness(runner, [
   {
-    description: 'Reduer',
+    description: 'Reducer',
     tests: [
       {
-        name: 'mapping only',
-        params: [createConfig(), MOCK_PAYLOAD, {}],
+        name: 'path',
+        params: [
+          null,
+          {
+            type: MOCK_TYPE,
+            path: 'some.internal.src',
+            fn: (d) => MOCK_PAYLOAD,
+          },
+          {
+            some: {
+              internal: {
+                src: MOCK_PAYLOAD,
+              },
+            },
+          },
+        ],
       },
       {
         name: 'initial value',
         params: [
-          createConfig({
-            initial: {
-              existing: 'data',
-            },
-          }),
           {
-            ...MOCK_PAYLOAD,
-            existing: 'data',
+            comments: [],
+          },
+          {
+            type: MOCK_TYPE,
+            path: 'comments',
+            fn: (d) => [{ id: '1', comment: 'hello' }],
+          },
+          {
+            comments: [{ id: '1', comment: 'hello' }],
           },
         ],
       },
       {
-        name: 'namespace',
+        name: 'missing type is ignored',
         params: [
-          createConfig({
-            namespace: 'profile',
-          }),
+          {},
           {
-            profile: MOCK_PAYLOAD,
+            type: 'IGNORE',
+            path: 'comments',
+            fn: (d) => null,
           },
           {},
-        ],
-      },
-      {
-        name: 'namespace, no initial, no existing state',
-        params: [
-          {
-            namespace: 'profile',
-            mapping: {
-              MISSING: (s) => s,
-            },
-          },
-          {
-            profile: null,
-          },
-        ],
-      },
-      {
-        name: 'no namespace, not initial, no existing state',
-        params: [createConfig(), MOCK_PAYLOAD],
-      },
-      {
-        name: 'namespace, with initial',
-        params: [
-          createConfig({
-            namespace: 'profile',
-            initial: {
-              userId: '123',
-            },
-          }),
-          {
-            profile: {
-              injected: true,
-              userId: '123',
-            },
-          },
-        ],
-      },
-      {
-        name: 'multiple configs',
-        params: [
-          [
-            createConfig({
-              namespace: 'posts',
-              initial: {
-                id: -1,
-              },
-            }),
-            createConfig({
-              namespace: 'comments',
-              initial: {
-                id: -1,
-                msg: 'Hello world',
-              },
-            }),
-          ],
-          {
-            comments: {
-              id: -1,
-              msg: 'Hello world',
-              ...MOCK_PAYLOAD,
-            },
-            posts: {
-              id: -1,
-              ...MOCK_PAYLOAD,
-            },
-          },
         ],
       },
     ],

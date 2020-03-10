@@ -1,6 +1,6 @@
 {
   "name": "@sullivan/redux-config",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Reduces redux boilerplate with a configurable structure",
   "main": "lib/index.js",
   "files": [
