@@ -7,7 +7,7 @@ Configuration for actions can be done in multiple ways to make edge cases easier
 | key| value | required | default |
 |--|--|--|--|
 | type | string | yes | - |
-| invocationType | string | - | 'sync' |
+| invocation | string | - | 'sync' |
 | fn | function | async only | - |
 | errorTransform | AsyncFunction | - | - |
 | payload | any | static only | - |
@@ -28,7 +28,7 @@ const fetch = (arg) => new Promise((resolve) => {
 
 const curried = actions({
   fetchPage: {
-    invocationType: 'async',
+    invocation: 'async',
     type: 'PAGE',
     fn: async (url) => fetch(url),
   },
@@ -53,7 +53,7 @@ If there are cases in which we expect an error to occur and want to respond with
 
 const curried = actions({
   fetchPage: {
-    invocationType: 'async',
+    invocation: 'async',
     type: 'PAGE',
     errorTransform: (e) => ({
       error: e.message,
