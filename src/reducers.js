@@ -18,8 +18,8 @@ export const reducers = (conf) => {
   return (state, action) => {
     const handler = handlers[action.type];
     if (handler) {
-      return handler(state, action.payload);
+      return handler(state, action.payload) || null;
     }
-    return state;
+    return state || null;
   };
 };

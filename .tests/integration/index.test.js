@@ -34,7 +34,7 @@ describe('Integration', () => {
       },
     ]);
 
-    const actionCreator = actions({
+    const curried = actions({
       postComment: {
         invocation: 'async',
         type: Constants.COMMENT_POST.DEFAULT,
@@ -57,8 +57,8 @@ describe('Integration', () => {
 
     const store = createStore(reducer, {}, applyMiddleware(logger));
 
-    const actions = actionCreator(store.dispatch);
+    const acts = curried(store.dispatch);
 
-    actions.postComment('hello world');
+    acts.postComment('hello world');
   });
 });
