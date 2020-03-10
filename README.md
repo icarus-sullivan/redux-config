@@ -287,5 +287,10 @@ State: {
 
 ## Changelog
 
+**0.6.0**
+- Updating how reducer config is declared
+- Deprecated `invocationType` in favor of `invocation`
+- Performance improvements
+
 **0.5.3**
 - Expose the actionCreator for one-off actions
