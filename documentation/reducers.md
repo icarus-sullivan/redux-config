@@ -59,12 +59,15 @@ import { reducers } from '@sullivan/redux-config';
 
 const reducer = reducers([
   {
-    type: 'POST_VIEW',
-    path: 'posts',
-    fn: (state, id) => ({
-      ...state,
-      viewing: id,
+    type: 'TEST',
+    fn: () => ({
+      initialized: true,
     }),
+  },
+  {
+    type: 'POST_VIEW',
+    path: 'post.items',
+    fn: (state = [], id) => [...state, { id }],
   },
   {
     type: 'COMMENT_LIKED',
@@ -77,14 +80,20 @@ const reducer = reducers([
 ]);
 
 const actions = [
+  { type: 'TEST' },
   { type: 'POST_VIEW', payload: 'postId' },
   { type: 'COMMENT_LIKED' },
 ];
 ```
 
 Output:
-```bash
-{ posts: { viewing: 'postId' } }
-{ posts: { viewing: 'postId' }, comments: { liked: true } }
+```javascript
+{ initialized: true }
+{ initialized: true, post: { items: [ [Object] ] } }
+{
+  initialized: true,
+  post: { items: [ [Object] ] },
+  comments: { liked: true }
+}
 ```
 
